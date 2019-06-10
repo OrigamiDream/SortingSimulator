@@ -8,8 +8,8 @@ script:
 before_deploy:
   - cd build/Build/Products/Debug
   - brew install create-dmg
-  - create-dmg Sorting\ Simulator.dmg SortingSimulator.app
-  - mv SortingSimulator*.dmg ../../../../SortingSimulator.dmg
+  - sudo create-dmg --volname "Sorting Simulator" --window-pos 200 120 --window-size 800 400 --icon-size 100 --icon "SortingSimulator.app" 200 190 --hide-extension "SortingSimulator.app" --app-drop-link 600 185 "Sorting Simulator.dmg" "SortingSimulator.app"
+  - mv Sorting Simulator.dmg ../../../../Sorting Simulator.dmg
   - cd ../../../../
 
 deploy:
