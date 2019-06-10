@@ -5,11 +5,13 @@ osx_image: xcode10.2
 script:
   - xcodebuild -scheme SortingSimulator -sdk macosx -destination 'platform=macOS' build -derivedDataPath build
 
+sudo: required
+
 before_deploy:
   - cd build/Build/Products/Debug
   - brew install create-dmg
   - sudo create-dmg --volname "Sorting Simulator" --window-pos 200 120 --window-size 800 400 --icon-size 100 --icon "SortingSimulator.app" 200 190 --hide-extension "SortingSimulator.app" --app-drop-link 600 185 "Sorting Simulator.dmg" "SortingSimulator.app"
-  - mv Sorting Simulator.dmg ../../../../Sorting Simulator.dmg
+  - mv Sorting\ Simulator.dmg ../../../../Sorting\ Simulator.dmg
   - cd ../../../../
 
 deploy:
