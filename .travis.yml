@@ -10,7 +10,16 @@ sudo: required
 before_deploy:
   - cd build/Build/Products/Debug
   - brew install create-dmg
-  - sudo create-dmg --volname "Sorting Simulator" --window-pos 200 120 --window-size 800 400 --icon-size 100 --icon "SortingSimulator.app" 200 190 --hide-extension "SortingSimulator.app" --app-drop-link 600 185 "Sorting Simulator.dmg" "SortingSimulator.app"
+  - sudo create-dmg \
+    --volname "Sorting Simulator" \
+    --window-pos 200 120 \
+    --window-size 800 400 \
+    --icon-size 100 \
+    --icon "SortingSimulator.app" 200 190 \
+    --hide-extension "SortingSimulator.app" \
+    --app-drop-link 600 185 \
+    "Sorting Simulator.dmg" \
+    "SortingSimulator.app"
   - mv Sorting\ Simulator.dmg ../../../../Sorting\ Simulator.dmg
   - cd ../../../../
 
@@ -21,7 +30,7 @@ deploy:
     secure: EfepK65BulKK20xooRosmpvliH+RHHZgKJ/JPHnCMLBnarepRlQpx2vvAoDykWHWehGVVH1FnBJD8M4wXhRhcLAGvMxX6/IyNt54xsxjCXSuDivdOzbA6QKHsfIFf5ubxy//X7cK1zWgdwerC+pSnMl5N7+YOvmpywpvQwRZzNDCPYEsYev/qJnBCBQjJe3uAWEhGrUWji9AZpCOf1cm6lUbB5gs8NzHimbYwwK+ZIk3VmxPvG5OSAcoTMq7PWwztCzwsXPebQ5CTA7S+JGJTvu2kydjDJXFiGO/AxhVwcYkCQpX7fLRWPIg0cCmlRSxksG68VRouMK0IiPCMuCy1fY9duQNSMwqBseQLU4zEMk5+MLjlkT2eVPOqGm/b94jjos9zh9EXRLpFq3JXuNslPF5xK2hXisgNm3RcHix5DYsVwW6x/SKfvl7cNa6OBJ1UYj3U1ZUpEYkO+zzceTIFrWVu7TwV5Sw4keLOJSh4+ijPB/1c4nsaVLZHA+LwOqi7lTp8qmPKa5jL8qLzL/4r6dQzgKvBa1e+2P39cCchJtsaZAMJEkyZkQHm4cXJIg5SblhLxISiRhx6Tx5ZLDyTW/92UswG4kFauFRaT7g7600PVM6Mb8VZLTUWVCSxUvNW+7pz9nI9YWN1QE8nW7qKHqP/TxDisbuS3V5mXVThJ0=
 
   file_glob: true
-  file: Sorting\ Simulator.dmg
+  file: "Sorting Simulator.dmg"
   skip_cleanup: true
 
   on:
