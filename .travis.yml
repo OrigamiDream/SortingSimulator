@@ -13,7 +13,7 @@ before_deploy:
   - security import pibox-installer.p12 -k build.keychain -P $MACOS_CERTIFICATE_PASSWORD -A
   - "security set-key-partition-list -S apple-tool:,apple: -s -k mysecretpassword build.keychain"
   - security find-identity -v
-  - "codesign --force --sign \"Mac Developer: sdy36071@naver.com (DSNGPFPWXA)\" \"build/Build/Products/Debug/SortingSimulator.app\" --deep"
+  - "codesign --force --sign \"Developer ID Application: sdy36071@naver.com (DSNGPFPWXA)\" \"build/Build/Products/Debug/SortingSimulator.app\" --deep"
   - cd build/Build/Products/Debug
   - npm install --global create-dmg
   - create-dmg SortingSimulator.app
