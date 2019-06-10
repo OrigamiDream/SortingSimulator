@@ -243,6 +243,9 @@ class RadixSort: Algorithm {
             
             var buckets: [[SortingValue]] = []
             for _ in 1...radix {
+                if cancellation.isQueued {
+                    return
+                }
                 buckets.append([])
             }
             
@@ -252,11 +255,17 @@ class RadixSort: Algorithm {
                 if done && index > 0 {
                     done = false
                 }
+                if cancellation.isQueued {
+                    return
+                }
             }
             
             var i = 0
             
             for j in 0..<radix {
+                if cancellation.isQueued {
+                    return
+                }
                 let bucket = buckets[j]
                 
                 for number in bucket {
@@ -285,6 +294,10 @@ class BubbleSort: Algorithm {
         
         for _ in 0..<array.count {
             for j in 1..<array.count - 1 {
+                if cancellation.isQueued {
+                    return
+                }
+                
                 if array[j].value < array[j - 1].value {
                     temp = array[j - 1]
                     array[j - 1] = array[j]
@@ -316,6 +329,10 @@ class ShellSort: Algorithm {
                 var j = i
                 
                 while j > h - 1 && array[j - h].value >= tmp.value {
+                    if cancellation.isQueued {
+                        return
+                    }
+                    
                     array[j] = array[j - h]
                     j -= h
                     
@@ -338,6 +355,9 @@ class HeapSort: Algorithm {
         for i in 1..<array.count {
             var c = i
             repeat {
+                if cancellation.isQueued {
+                    return
+                }
                 let root = (c - 1) / 2
                 if array[root].value < array[c].value {
                     let temp = array[root]
@@ -359,6 +379,9 @@ class HeapSort: Algorithm {
             var c = 1
             
             repeat {
+                if cancellation.isQueued {
+                    return
+                }
                 c = 2 * root + 1
                 
                 if c < i - 1 && array[c].value < array[c + 1].value {
