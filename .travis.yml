@@ -22,6 +22,7 @@ deploy:
 
   file_glob: true
   file: SortingSimulator.dmg
+  skip_cleanup: true
 
   on:
     tags: true
