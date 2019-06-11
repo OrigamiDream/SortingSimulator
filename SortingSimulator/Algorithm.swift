@@ -18,7 +18,7 @@ protocol Algorithm {
 
 class Algorithms {
     
-    public static var ALGORITHMS: [Algorithm] = [ QuickSort(), InsertionSort(), SelectionSort(), MergeSort(), RadixSort(), BubbleSort(), ShellSort(), HeapSort(), CountingSort(), GravitySort(), CocktailSort(), GnomeSort() ]
+    public static var ALGORITHMS: [Algorithm] = [ QuickSort(), InsertionSort(), SelectionSort(), MergeSort(), RadixSort(), BubbleSort(), ShellSort(), HeapSort(), CountingSort(), GravitySort(), CocktailSort(), GnomeSort(), PancakeSort() ]
     
 }
 
@@ -642,4 +642,66 @@ class GnomeSort: Algorithm {
             }
         }
     }
+}
+
+class PancakeSort: Algorithm {
+    
+    func name() -> String {
+        return "Pancake Sort"
+    }
+    
+    func sort(array: inout [SortingValue], cancellation: QueueCancellation) {
+        pancakeSort(array: &array, n: array.count, cancellation: cancellation)
+    }
+    
+    private func flip(array: inout [SortingValue], i: Int, cancellation: QueueCancellation) {
+        var j = i
+        var temp: SortingValue
+        var start = 0
+        
+        while start < j {
+            if cancellation.isQueued {
+                return
+            }
+            
+            temp = array[start]
+            array[start] = array[j]
+            array[j] = temp
+            
+            start += 1
+            j -= 1
+            
+            temp.color = .red
+            usleep(100)
+            temp.color = .white
+        }
+    }
+    
+    private func findMax(array: inout [SortingValue], n: Int) -> Int {
+        var mi = 0
+        
+        for i in 0..<n {
+            if array[i].value > array[mi].value {
+                mi = i
+            }
+        }
+        
+        return mi
+    }
+    
+    private func pancakeSort(array: inout [SortingValue], n: Int, cancellation: QueueCancellation) {
+        for currentSize in (2..<(n + 1)).reversed() {
+            if cancellation.isQueued {
+                return
+            }
+            
+            let mi = findMax(array: &array, n: currentSize)
+            
+            if mi != currentSize - 1 {
+                flip(array: &array, i: mi, cancellation: cancellation)
+                flip(array: &array, i: currentSize - 1, cancellation: cancellation)
+            }
+        }
+    }
+    
 }
