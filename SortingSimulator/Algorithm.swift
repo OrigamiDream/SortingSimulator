@@ -80,7 +80,9 @@ class QuickSort: Algorithm {
                 array[j] = temp
             }
             
+            temp.color = .red
             usleep(5000)
+            temp.color = .white
         }
         
         quicksort(array: &array, left: left, right: j - 1, cancellation: cancellation)
@@ -105,7 +107,10 @@ class InsertionSort: Algorithm {
                     return
                 }
                 
+                let value = array[y]
+                value.color = .red
                 usleep(100)
+                value.color = .white
             }
             
             array[y] = temp
@@ -135,13 +140,22 @@ class SelectionSort: Algorithm {
                 }
             }
             
+            var value: SortingValue!
             if i != least {
                 temp = array[i]
                 array[i] = array[least]
                 array[least] = temp
+                
+                value = temp
             }
             
+            if let v = value {
+                v.color = .red
+            }
             usleep(10000)
+            if let v = value {
+                v.color = .white
+            }
         }
     }
     
@@ -180,6 +194,10 @@ class MergeSort: Algorithm {
                 j += 1
             }
             
+            sorted[k - 1]?.color = .red
+            usleep(1000)
+            sorted[k - 1]?.color = .white
+            
             if cancellation.isQueued {
                 return
             }
@@ -190,12 +208,20 @@ class MergeSort: Algorithm {
                 sorted[k] = array[l]
                 
                 k += 1
+                
+                sorted[k - 1]?.color = .red
+                usleep(1000)
+                sorted[k - 1]?.color = .white
             }
         } else {
             for l in i...mid {
                 sorted[k] = array[l]
                 
                 k += 1
+                
+                sorted[k - 1]?.color = .red
+                usleep(1000)
+                sorted[k - 1]?.color = .white
             }
         }
         
@@ -206,10 +232,12 @@ class MergeSort: Algorithm {
             
             if let value = sorted[l] {
                 array[l] = value
+                
+                value.color = .red
+                usleep(1000)
+                value.color = .white
             }
         }
-        
-        usleep(10000)
     }
     
     private func mergeSort(sorted: inout [SortingValue?], array: inout [SortingValue], left: Int, right: Int, cancellation: QueueCancellation) {
@@ -249,15 +277,18 @@ class RadixSort: Algorithm {
                 buckets.append([])
             }
             
-            for number in array {
-                index = Int(number.value * 1000000000) / digit
-                buckets[index % radix].append(number)
+            for value in array {
+                index = Int(value.value * 1000000000) / digit
+                buckets[index % radix].append(value)
                 if done && index > 0 {
                     done = false
                 }
                 if cancellation.isQueued {
                     return
                 }
+                value.color = .red
+                usleep(1000)
+                value.color = .white
             }
             
             var i = 0
@@ -268,11 +299,13 @@ class RadixSort: Algorithm {
                 }
                 let bucket = buckets[j]
                 
-                for number in bucket {
-                    array[i] = number
+                for value in bucket {
+                    array[i] = value
                     i += 1
                     
+                    value.color = .red
                     usleep(1000)
+                    value.color = .white
                 }
             }
             
@@ -303,7 +336,9 @@ class BubbleSort: Algorithm {
                     array[j - 1] = array[j]
                     array[j] = temp
                     
+                    temp.color = .red
                     usleep(10)
+                    temp.color = .white
                 }
             }
         }
@@ -333,10 +368,13 @@ class ShellSort: Algorithm {
                         return
                     }
                     
-                    array[j] = array[j - h]
+                    let value = array[j - h]
+                    array[j] = value
                     j -= h
                     
+                    value.color = .red
                     usleep(1000)
+                    value.color = .white
                 }
                 
                 array[j] = tmp
@@ -359,14 +397,21 @@ class HeapSort: Algorithm {
                     return
                 }
                 let root = (c - 1) / 2
+                var temp: SortingValue!
                 if array[root].value < array[c].value {
-                    let temp = array[root]
+                    temp = array[root]
                     array[root] = array[c]
                     array[c] = temp
                 }
                 c = root
                 
-                usleep(100)
+                if let value = temp {
+                    value.color = .red
+                }
+                usleep(500)
+                if let value = temp {
+                    value.color = .white
+                }
             } while c != 0
         }
         
@@ -395,7 +440,9 @@ class HeapSort: Algorithm {
                 }
                 root = c
                 
-                usleep(100)
+                temp.color = .red
+                usleep(500)
+                temp.color = .white
             } while c < i
         }
     }
