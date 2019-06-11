@@ -18,7 +18,7 @@ protocol Algorithm {
 
 class Algorithms {
     
-    public static var ALGORITHMS: [Algorithm] = [ QuickSort(), InsertionSort(), SelectionSort(), MergeSort(), RadixSort(), BubbleSort(), ShellSort(), HeapSort(), CountingSort(), GravitySort() ]
+    public static var ALGORITHMS: [Algorithm] = [ QuickSort(), InsertionSort(), SelectionSort(), MergeSort(), RadixSort(), BubbleSort(), ShellSort(), HeapSort(), CountingSort(), GravitySort(), CocktailSort() ]
     
 }
 
@@ -545,5 +545,57 @@ class GravitySort: Algorithm {
             }
             usleep(10000)
         }
+    }
+}
+
+class CocktailSort: Algorithm {
+    
+    func name() -> String {
+        return "Cocktail Sort"
+    }
+    
+    func sort(array: inout [SortingValue], cancellation: QueueCancellation) {
+        var swapped: Bool
+        repeat {
+            swapped = false
+            for i in 0...array.count - 2 {
+                var temp: SortingValue!
+                if array[i] > array[i + 1] {
+                    temp = array[i]
+                    array[i] = array[i + 1]
+                    array[i + 1] = temp
+                    swapped = true
+                }
+                
+                if let value = temp {
+                    value.color = .red
+                }
+                usleep(10)
+                if let value = temp {
+                    value.color = .white
+                }
+            }
+            if !swapped {
+                break
+            }
+            swapped = false
+            for i in (0...array.count - 2).reversed() {
+                var temp: SortingValue!
+                if array[i] > array[i + 1] {
+                    temp = array[i]
+                    array[i] = array[i + 1]
+                    array[i + 1] = temp
+                    swapped = true
+                }
+                
+                if let value = temp {
+                    value.color = .red
+                }
+                usleep(10)
+                if let value = temp {
+                    value.color = .white
+                }
+            }
+        } while swapped
     }
 }
