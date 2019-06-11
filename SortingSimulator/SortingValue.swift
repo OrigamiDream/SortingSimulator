@@ -9,7 +9,15 @@
 import Foundation
 import Cocoa
 
-class SortingValue {
+class SortingValue: Comparable {
+    
+    static func < (lhs: SortingValue, rhs: SortingValue) -> Bool {
+        return lhs.value < rhs.value
+    }
+    
+    static func == (lhs: SortingValue, rhs: SortingValue) -> Bool {
+        return lhs.value == rhs.value
+    }
     
     public private(set) var value: Double
     public var color: NSColor

@@ -18,7 +18,7 @@ protocol Algorithm {
 
 class Algorithms {
     
-    public static var ALGORITHMS: [Algorithm] = [ QuickSort(), InsertionSort(), SelectionSort(), MergeSort(), RadixSort(), BubbleSort(), ShellSort(), HeapSort() ]
+    public static var ALGORITHMS: [Algorithm] = [ QuickSort(), InsertionSort(), SelectionSort(), MergeSort(), RadixSort(), BubbleSort(), ShellSort(), HeapSort(), CountingSort() ]
     
 }
 
@@ -278,7 +278,7 @@ class RadixSort: Algorithm {
             }
             
             for value in array {
-                index = Int(value.value * 1000000000) / digit
+                index = Int(value.value * 10000000) / digit
                 buckets[index % radix].append(value)
                 if done && index > 0 {
                     done = false
@@ -447,4 +447,56 @@ class HeapSort: Algorithm {
         }
     }
     
+}
+
+class CountingSort: Algorithm {
+    func name() -> String {
+        return "Counting Sort"
+    }
+    
+    func sort(array: inout [SortingValue], cancellation: QueueCancellation) {
+        var maxValue = 0
+        for sample in array {
+            maxValue = max(Int(sample.value * 10000000), maxValue)
+            
+            sample.color = .red
+            usleep(1000)
+            sample.color = .white
+        }
+        
+        var count = [Int](repeating: 0, count: maxValue + 1)
+        
+        for sample in array {
+            count[Int(sample.value * 10000000)] += 1
+            
+            sample.color = .red
+            usleep(1000)
+            sample.color = .white
+        }
+        
+        for i in 1..<count.count {
+            count[i] += count[i - 1]
+        }
+        
+        var output = [SortingValue?](repeating: nil, count: array.count)
+        for i in 0..<array.count {
+            let value = array[i]
+            output[count[Int(array[i].value * 10000000)] - 1] = value
+            count[Int(array[i].value * 10000000)] -= 1
+            
+            value.color = .red
+            usleep(1000)
+            value.color = .white
+        }
+        
+        for i in 0..<array.count {
+            if let value = output[i] {
+                array[i] = value
+                
+                value.color = .red
+                usleep(1000)
+                value.color = .white
+            }
+        }
+    }
 }
