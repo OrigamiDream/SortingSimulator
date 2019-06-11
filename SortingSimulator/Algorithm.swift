@@ -18,7 +18,7 @@ protocol Algorithm {
 
 class Algorithms {
     
-    public static var ALGORITHMS: [Algorithm] = [ QuickSort(), InsertionSort(), SelectionSort(), MergeSort(), RadixSort(), BubbleSort(), ShellSort(), HeapSort(), CountingSort() ]
+    public static var ALGORITHMS: [Algorithm] = [ QuickSort(), InsertionSort(), SelectionSort(), MergeSort(), RadixSort(), BubbleSort(), ShellSort(), HeapSort(), CountingSort(), GravitySort() ]
     
 }
 
@@ -457,6 +457,10 @@ class CountingSort: Algorithm {
     func sort(array: inout [SortingValue], cancellation: QueueCancellation) {
         var maxValue = 0
         for sample in array {
+            if cancellation.isQueued {
+                return
+            }
+            
             maxValue = max(sample.value, maxValue)
             
             sample.color = .red
@@ -467,6 +471,10 @@ class CountingSort: Algorithm {
         var count = [Int](repeating: 0, count: maxValue + 1)
         
         for sample in array {
+            if cancellation.isQueued {
+                return
+            }
+            
             count[sample.value] += 1
             
             sample.color = .red
@@ -475,11 +483,19 @@ class CountingSort: Algorithm {
         }
         
         for i in 1..<count.count {
+            if cancellation.isQueued {
+                return
+            }
+            
             count[i] += count[i - 1]
         }
         
         var output = [SortingValue?](repeating: nil, count: array.count)
         for i in 0..<array.count {
+            if cancellation.isQueued {
+                return
+            }
+            
             let value = array[i]
             output[count[array[i].value] - 1] = value
             count[array[i].value] -= 1
@@ -490,6 +506,10 @@ class CountingSort: Algorithm {
         }
         
         for i in 0..<array.count {
+            if cancellation.isQueued {
+                return
+            }
+            
             if let value = output[i] {
                 array[i] = value
                 
@@ -497,6 +517,33 @@ class CountingSort: Algorithm {
                 usleep(1000)
                 value.color = .white
             }
+        }
+    }
+}
+
+class GravitySort: Algorithm {
+    
+    func name() -> String {
+        return "Gravity Sort (Bead Sort)"
+    }
+    
+    func sort(array: inout [SortingValue], cancellation: QueueCancellation) {
+        for _ in 0..<array.count {
+            for i in (1..<array.count).reversed() {
+                if cancellation.isQueued {
+                    return
+                }
+                
+                let prev = array[i - 1]
+                let current = array[i]
+                
+                if prev.value > current.value {
+                    let diff = prev.value - current.value
+                    prev.value -= diff
+                    current.value += diff
+                }
+            }
+            usleep(10000)
         }
     }
 }

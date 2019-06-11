@@ -19,7 +19,7 @@ class SortingValue: Comparable {
         return lhs.value == rhs.value
     }
     
-    public private(set) var value: Int
+    public var value: Int
     public var color: NSColor
     
     init(value: Int) {
