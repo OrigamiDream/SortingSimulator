@@ -79,11 +79,12 @@ class SortingDisplayView: NSView {
         DispatchQueue(label: "Sorting asynchronous").async {
             algorithm.sort(array: &self.samples, cancellation: self.cancellation)
             
-            if !self.cancellation.isQueued {
-                for sample in self.samples {
-                    usleep(1000)
-                    sample.color = .green
+            for sample in self.samples {
+                if self.cancellation.isQueued {
+                    break
                 }
+                usleep(1000)
+                sample.color = .green
             }
             
             DispatchQueue.main.sync {
