@@ -18,7 +18,7 @@ protocol Algorithm {
 
 class Algorithms {
     
-    public static var ALGORITHMS: [Algorithm] = [ QuickSort(), InsertionSort(), SelectionSort(), MergeSort(), RadixSort(), BubbleSort(), ShellSort(), HeapSort(), CountingSort(), GravitySort(), CocktailSort() ]
+    public static var ALGORITHMS: [Algorithm] = [ QuickSort(), InsertionSort(), SelectionSort(), MergeSort(), RadixSort(), BubbleSort(), ShellSort(), HeapSort(), CountingSort(), GravitySort(), CocktailSort(), GnomeSort() ]
     
 }
 
@@ -559,6 +559,10 @@ class CocktailSort: Algorithm {
         repeat {
             swapped = false
             for i in 0...array.count - 2 {
+                if cancellation.isQueued {
+                    return
+                }
+                
                 var temp: SortingValue!
                 if array[i] > array[i + 1] {
                     temp = array[i]
@@ -580,6 +584,10 @@ class CocktailSort: Algorithm {
             }
             swapped = false
             for i in (0...array.count - 2).reversed() {
+                if cancellation.isQueued {
+                    return
+                }
+                
                 var temp: SortingValue!
                 if array[i] > array[i + 1] {
                     temp = array[i]
@@ -597,5 +605,41 @@ class CocktailSort: Algorithm {
                 }
             }
         } while swapped
+    }
+}
+
+class GnomeSort: Algorithm {
+    func name() -> String {
+        return "Gnome Sort"
+    }
+    
+    func sort(array: inout [SortingValue], cancellation: QueueCancellation) {
+        var first = 1
+        var second = 2
+        
+        while first < array.count {
+            if cancellation.isQueued {
+                return
+            }
+            
+            if array[first - 1].value <= array[first].value {
+                first = second
+                second += 1
+            } else {
+                let temp = array[first - 1]
+                array[first - 1] = array[first]
+                array[first] = temp
+                first -= 1
+                
+                temp.color = .red
+                usleep(100)
+                temp.color = .white
+                
+                if first == 0 {
+                    first = 1
+                    second = 2
+                }
+            }
+        }
     }
 }
