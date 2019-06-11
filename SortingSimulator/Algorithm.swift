@@ -278,7 +278,7 @@ class RadixSort: Algorithm {
             }
             
             for value in array {
-                index = Int(value.value * 10000000) / digit
+                index = value.value / digit
                 buckets[index % radix].append(value)
                 if done && index > 0 {
                     done = false
@@ -457,7 +457,7 @@ class CountingSort: Algorithm {
     func sort(array: inout [SortingValue], cancellation: QueueCancellation) {
         var maxValue = 0
         for sample in array {
-            maxValue = max(Int(sample.value * 10000000), maxValue)
+            maxValue = max(sample.value, maxValue)
             
             sample.color = .red
             usleep(1000)
@@ -467,7 +467,7 @@ class CountingSort: Algorithm {
         var count = [Int](repeating: 0, count: maxValue + 1)
         
         for sample in array {
-            count[Int(sample.value * 10000000)] += 1
+            count[sample.value] += 1
             
             sample.color = .red
             usleep(1000)
@@ -481,8 +481,8 @@ class CountingSort: Algorithm {
         var output = [SortingValue?](repeating: nil, count: array.count)
         for i in 0..<array.count {
             let value = array[i]
-            output[count[Int(array[i].value * 10000000)] - 1] = value
-            count[Int(array[i].value * 10000000)] -= 1
+            output[count[array[i].value] - 1] = value
+            count[array[i].value] -= 1
             
             value.color = .red
             usleep(1000)

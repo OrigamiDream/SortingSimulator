@@ -37,7 +37,7 @@ class SortingDisplayView: NSView {
             let sample = samples[i]
             sample.color.setFill()
             NSBezierPath.fill(NSRect(x: bounds.width / CGFloat(samples.count) * CGFloat(i), y: 0.0,
-                                     width: bounds.width / CGFloat(samples.count), height: bounds.height * CGFloat(sample.value)))
+                                     width: bounds.width / CGFloat(samples.count), height: bounds.height * (CGFloat(sample.value) / CGFloat(samples.count))))
         }
     }
     
@@ -57,8 +57,8 @@ class SortingDisplayView: NSView {
     
     func setSampleSize(samples: Int) {
         self.samples.removeAll()
-        for _ in 0..<samples {
-            self.samples.append(SortingValue(value: drand48()))
+        for i in 1...samples {
+            self.samples.append(SortingValue(value: i))
         }
         self.samples.shuffle()
         setNeedsDisplay(bounds)
